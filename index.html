@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Lớp 4 - English Challenge: Ôn tập cuối năm</title>
+    <title>Lớp 4 - English Challenge: Ôn tập cuối năm (có nghe TV)</title>
     <style>
         * {
             box-sizing: border-box;
@@ -18,7 +18,6 @@
             align-items: center;
             padding: 20px;
         }
-        /* main container */
         .game-hub {
             max-width: 1200px;
             width: 100%;
@@ -27,7 +26,6 @@
             box-shadow: 0 20px 35px rgba(0,0,0,0.3);
             overflow: hidden;
         }
-        /* header */
         .main-header {
             background: #f9b23f;
             padding: 20px 30px;
@@ -51,7 +49,6 @@
             font-weight: bold;
             font-size: 1.4rem;
         }
-        /* nav các phòng */
         .room-nav {
             display: flex;
             flex-wrap: wrap;
@@ -80,7 +77,6 @@
             background: #5f9c6b;
             color: white;
         }
-        /* nội dung câu hỏi */
         .quiz-area {
             padding: 30px;
             background: #fff7ec;
@@ -183,9 +179,7 @@
         <div class="score-panel">🏆 Điểm: <span id="totalScore">0</span></div>
     </div>
     <div class="room-nav" id="roomNav"></div>
-    <div class="quiz-area" id="quizArea">
-        <!-- nội dung động -->
-    </div>
+    <div class="quiz-area" id="quizArea"></div>
 </div>
 
 <script>
@@ -233,16 +227,40 @@
     let currentRoomIdx = 0;
     let currentQIndex = 0;
     let answered = false;
-    let roomScores = [0,0,0,0,0];  // lưu điểm từng phòng
+    let roomScores = [0,0,0,0,0];
     let roomCompleted = [false,false,false,false,false];
 
-    // DOM elements
     const roomNavDiv = document.getElementById("roomNav");
     const quizArea = document.getElementById("quizArea");
     const totalScoreSpan = document.getElementById("totalScore");
 
     function updateTotalScoreUI() {
         totalScoreSpan.innerText = totalPoints;
+    }
+
+    // ---------- CẢI TIẾN TEXT-TO-SPEECH: TỰ ĐỘNG NHẬN DIỆN TIẾNG VIỆT ----------
+    function isVietnamese(text) {
+        // Kiểm tra có dấu tiếng Việt (chữ có dấu sắc, huyền, hỏi, ngã, nặng, hoặc các chữ đặc thù: ă, â, ê, ô, ơ, ư, đ)
+        const vietnameseChars = /[àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰĐ]/;
+        return vietnameseChars.test(text);
+    }
+
+    function speakTextWithAutoLang(text) {
+        if (!('speechSynthesis' in window)) {
+            alert("Trình duyệt không hỗ trợ đọc to.");
+            return;
+        }
+        // Hủy bất kỳ giọng đang phát để tránh chồng chéo
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        // Tự động chọn ngôn ngữ
+        if (isVietnamese(text)) {
+            utterance.lang = 'vi-VN';
+        } else {
+            utterance.lang = 'en-US';
+        }
+        utterance.rate = 0.9; // tốc độ vừa phải
+        window.speechSynthesis.speak(utterance);
     }
 
     function renderRoomNav() {
@@ -265,21 +283,16 @@
         });
     }
 
-    // helper render dạng câu hỏi
     function renderCurrentQuestion() {
         const room = rooms[currentRoomIdx];
         if (!room || currentQIndex >= room.questions.length) {
-            // nếu hoàn thành phòng
             if (!roomCompleted[currentRoomIdx]) {
                 roomCompleted[currentRoomIdx] = true;
-                // cộng dồn điểm phòng nếu chưa cộng (điểm đã cộng từng câu)
-                // thông báo
                 alert(`🎉 Hoàn thành phòng "${room.name}"! Bạn được thêm 10 điểm thưởng!`);
                 totalPoints += 10;
                 updateTotalScoreUI();
                 renderRoomNav();
             }
-            // chuyển sang phòng tiếp theo nếu có
             let nextRoom = currentRoomIdx+1;
             if (nextRoom < rooms.length) {
                 currentRoomIdx = nextRoom;
@@ -295,9 +308,8 @@
 
         const q = room.questions[currentQIndex];
         let html = `<div class="question-card"><div class="question-text">${q.text}</div>`;
-        
-        // Thêm nút nghe (nếu muốn đọc to câu hỏi)
-        html += `<button class="action-btn listen-btn" onclick="speakText('${escapeJS(q.text)}')">🔊 Nghe câu hỏi</button>`;
+        // Nút nghe với ngôn ngữ tự động
+        html += `<button class="action-btn listen-btn" onclick="speakTextWithAutoLang('${escapeJS(q.text)}')">🔊 Nghe câu hỏi (TV/TA tự động)</button>`;
 
         if (q.type === "mc") {
             html += `<div class="options-area" id="optArea">`;
@@ -315,12 +327,10 @@
             html += `<button class="action-btn" id="submitFill">Kiểm tra</button></div>`;
         }
         else if (q.type === "sort") {
-            // hiển thị các từ xáo trộn, click để sắp xếp
             let shuffled = [...q.words];
             for (let i=shuffled.length-1;i>0;i--) { let j=Math.floor(Math.random()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; }
             html += `<div><div class="word-bank" id="sortBank"></div><div>Thứ tự hiện tại: <span id="currentOrder">(chưa chọn)</span></div>`;
             html += `<button class="action-btn" id="submitSort">Xác nhận</button> <button class="action-btn" id="resetSort">Reset</button></div>`;
-            // sẽ dùng js động
         }
         else if (q.type === "reading") {
             html += `<div class="options-area">`;
@@ -335,7 +345,7 @@
         html += `</div>`;
         quizArea.innerHTML = html;
 
-        // gắn sự kiện theo loại
+        // Gắn sự kiện
         if (q.type === "mc" || q.type === "tf" || (q.type === "reading" && q.options)) {
             const opts = document.querySelectorAll(".opt");
             opts.forEach(opt => {
@@ -436,23 +446,12 @@
             else correctAnswerDisplay = q.correct;
             fbDiv.innerHTML = `❌ Sai! Đáp án đúng: ${correctAnswerDisplay}. Học lại nhé!`;
         }
-        // disable tất cả options
+        // disable options
         document.querySelectorAll(".opt, .word-card, #submitFill, #submitSort").forEach(el => {
             if (el) el.style.pointerEvents = "none";
         });
         const fillInp = document.getElementById("fillAnswer");
         if (fillInp) fillInp.disabled = true;
-    }
-
-    function speakText(text) {
-        if ('speechSynthesis' in window) {
-            let utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            window.speechSynthesis.cancel();
-            window.speechSynthesis.speak(utterance);
-        } else {
-            alert("Trình duyệt không hỗ trợ đọc to.");
-        }
     }
 
     function escapeHtml(str) {
@@ -464,10 +463,10 @@
         });
     }
     function escapeJS(str) {
-        return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        return str.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
     }
 
-    // khởi tạo
+    // Khởi tạo
     renderRoomNav();
     renderCurrentQuestion();
 </script>
