@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Lớp 4 - English Challenge: Ôn tập cuối năm (có nghe TV)</title>
+    <title>Grade 4 English Review Game - Full English</title>
     <style>
         * {
             box-sizing: border-box;
@@ -144,13 +144,6 @@
             background: #f4a261;
             margin-bottom: 15px;
         }
-        .speak-card {
-            background: #e9f5e6;
-            padding: 15px;
-            border-radius: 40px;
-            text-align: center;
-            margin-top: 15px;
-        }
         input, .word-bank {
             margin: 10px 0;
         }
@@ -166,60 +159,56 @@
             .question-text { font-size: 1.2rem; }
             .room-btn { font-size: 0.8rem; padding: 6px 12px; }
         }
-        .badge {
-            font-size: 1rem;
-            margin-left: 15px;
-        }
     </style>
 </head>
 <body>
 <div class="game-hub" id="gameHub">
     <div class="main-header">
-        <div class="title">🌟 Hành trình chinh phục Tiếng Anh 4 🌟</div>
-        <div class="score-panel">🏆 Điểm: <span id="totalScore">0</span></div>
+        <div class="title">🌟 English Adventure - Grade 4 🌟</div>
+        <div class="score-panel">🏆 Score: <span id="totalScore">0</span></div>
     </div>
     <div class="room-nav" id="roomNav"></div>
     <div class="quiz-area" id="quizArea"></div>
 </div>
 
 <script>
-    // ------------------ DỮ LIỆU CÂU HỎI ĐẦY ĐỦ THEO PDF ------------------
+    // ---------- ALL QUESTIONS IN ENGLISH (NO VIETNAMESE MEANINGS) ----------
     const rooms = [
-        { name: "☀️ Thời tiết & Hoạt động", icon: "☀️", completed: false, questions: [
-            { type: "mc", text: "What's the weather like? (trời có mưa)", options: ["It's rainy.", "It's sunny.", "It's windy.", "It's snowy."], correct: "It's rainy." },
+        { name: "☀️ Weather & Activities", icon: "☀️", completed: false, questions: [
+            { type: "mc", text: "What's the weather like? (rainy)", options: ["It's rainy.", "It's sunny.", "It's windy.", "It's snowy."], correct: "It's rainy." },
             { type: "mc", text: "When it's snowy, we can _____ .", options: ["fly a kite", "make a snowman", "go outside", "wear a sun hat"], correct: "make a snowman" },
-            { type: "fill", text: "Hoàn thành câu: 'Don't put on your coat because it's _____ .' (nóng)", correct: "hot", hint: "trái nghĩa với cold" },
-            { type: "tf", text: "Nói: 'Let's go home because it's rainy.' → Họ về nhà vì trời nắng.", correct: false },
+            { type: "fill", text: "Complete: 'Don't put on your coat because it's _____ .' (hot)", correct: "hot", hint: "Opposite of cold" },
+            { type: "tf", text: "Statement: 'Let's go home because it's rainy.' → They go home because it's sunny.", correct: false },
             { type: "mc", text: "Why should we wear a sun hat?", options: ["Because it's cold.", "Because it's sunny.", "Because it's windy.", "Because it's rainy."], correct: "Because it's sunny." }
         ] },
-        { name: "⏰ Giờ giấc & Hàng ngày", icon: "⏰", completed: false, questions: [
+        { name: "⏰ Time & Daily Routine", icon: "⏰", completed: false, questions: [
             { type: "mc", text: "What time is it? (2:45)", options: ["It's two fifteen.", "It's two thirty.", "It's two forty-five.", "It's three o'clock."], correct: "It's two forty-five." },
-            { type: "fill", text: "What time do you _____ to school? (đi học)", correct: "go", hint: "động từ 'go'" },
-            { type: "sort", text: "Sắp xếp: have / breakfast / I / at / six thirty / .", correctOrder: ["I", "have", "breakfast", "at", "six thirty", "."], words: ["I","have","breakfast","at","six thirty","."] },
+            { type: "fill", text: "What time do you _____ to school?", correct: "go", hint: "verb 'go'" },
+            { type: "sort", text: "Arrange: have / breakfast / I / at / six thirty / .", correctOrder: ["I", "have", "breakfast", "at", "six thirty", "."], words: ["I","have","breakfast","at","six thirty","."] },
             { type: "mc", text: "He _____ to bed at nine o'clock in the evening.", options: ["go", "goes", "going", "went"], correct: "goes" },
-            { type: "tf", text: "Câu: 'She gets up at seven o'clock in the morning.' → Cô ấy thức dậy lúc 7 giờ tối.", correct: false }
+            { type: "tf", text: "Sentence: 'She gets up at seven o'clock in the morning.' → She gets up at 7 PM.", correct: false }
         ] },
-        { name: "🏀 Sở thích & Ngày đặc biệt", icon: "🎈", completed: false, questions: [
+        { name: "🏀 Likes & Special Days", icon: "🎈", completed: false, questions: [
             { type: "mc", text: "I like _____ comics.", options: ["read", "reading", "to read", "reads"], correct: "reading" },
             { type: "mc", text: "He doesn't like _____ .", options: ["fishing", "fish", "go fish", "fished"], correct: "fishing" },
             { type: "fill", text: "Do you like playing chess? → Yes, _____ .", correct: "I do", hint: "Yes, I do / No, I don't" },
-            { type: "tf", text: "Câu: 'She likes balloons but she doesn't like candy.' → Cô ấy thích kẹo.", correct: false },
-            { type: "sort", text: "Sắp xếp: doesn't / playing / like / chess / He / .", correctOrder: ["He", "doesn't", "like", "playing", "chess", "."], words: ["He","doesn't","like","playing","chess","."] },
-            { type: "mc", text: "What do you want on your birthday? (chọn 1 từ trong bài)", options: ["volcano", "candle", "train station", "neat"], correct: "candle" }
+            { type: "tf", text: "Sentence: 'She likes balloons but she doesn't like candy.' → She likes candy.", correct: false },
+            { type: "sort", text: "Arrange: doesn't / playing / like / chess / He / .", correctOrder: ["He", "doesn't", "like", "playing", "chess", "."], words: ["He","doesn't","like","playing","chess","."] },
+            { type: "mc", text: "What do you often get on your birthday? (choose one word from the lesson)", options: ["volcano", "candle", "train station", "neat"], correct: "candle" }
         ] },
-        { name: "🧭 Chỉ đường & Vị trí", icon: "🗺️", completed: false, questions: [
+        { name: "🧭 Directions & Places", icon: "🗺️", completed: false, questions: [
             { type: "mc", text: "How to get to the bus station? 'Go straight, then _____ left.'", options: ["turn", "go", "take", "move"], correct: "turn" },
             { type: "mc", text: "The library is _____ the bookstore and the cinema.", options: ["next to", "opposite", "between", "inside"], correct: "between" },
-            { type: "fill", text: "The supermarket is _____ to the bank. (kế bên)", correct: "next", hint: "next to" },
-            { type: "tf", text: "Turn right at the traffic lights. → Rẽ trái ở đèn giao thông.", correct: false },
-            { type: "sort", text: "Sắp xếp: opposite / the / school / is / hospital / the / .", correctOrder: ["The", "hospital", "is", "opposite", "the", "school", "."], words: ["The","hospital","is","opposite","the","school","."] }
+            { type: "fill", text: "The supermarket is _____ to the bank. (next to)", correct: "next", hint: "next to" },
+            { type: "tf", text: "Turn right at the traffic lights. → Turn left at the traffic lights.", correct: false },
+            { type: "sort", text: "Arrange: opposite / the / school / is / hospital / the / .", correctOrder: ["The", "hospital", "is", "opposite", "the", "school", "."], words: ["The","hospital","is","opposite","the","school","."] }
         ] },
-        { name: "📖 Ôn tổng hợp & Đọc hiểu", icon: "📘", completed: false, questions: [
-            { type: "reading", text: "Đọc đoạn: 'My name is Lan. I like sunny weather. I often fly a kite in the park. I don't like rainy days because I can't go outside.' Hỏi: Does Lan like rainy weather?", correct: false, options: ["Yes, she does", "No, she doesn't"] },
-            { type: "mc", text: "Quá khứ của 'is'? (trong bài: I ___ cute when I was young.)", options: ["were", "was", "am", "are"], correct: "was" },
-            { type: "fill", text: "The volcano has a big _____ inside. Lava comes out.", correct: "hole", hint: "từ trong bài volcano" },
-            { type: "tf", text: "The classroom is neat and the floor is clean. → 'neat' có nghĩa là bừa bộn.", correct: false },
-            { type: "sort", text: "Sắp xếp: like / doesn't / He / volleyball / playing .", correctOrder: ["He", "doesn't", "like", "playing", "volleyball", "."], words: ["He","doesn't","like","playing","volleyball","."] }
+        { name: "📖 Review & Reading", icon: "📘", completed: false, questions: [
+            { type: "reading", text: "Read: 'My name is Lan. I like sunny weather. I often fly a kite in the park. I don't like rainy days because I can't go outside.' Question: Does Lan like rainy weather?", correct: false, options: ["Yes, she does", "No, she doesn't"] },
+            { type: "mc", text: "Past tense of 'is'? (Example: I ___ cute when I was young.)", options: ["were", "was", "am", "are"], correct: "was" },
+            { type: "fill", text: "The volcano has a big _____ inside. Lava comes out.", correct: "hole", hint: "word from volcano lesson" },
+            { type: "tf", text: "The classroom is neat and the floor is clean. → 'neat' means messy.", correct: false },
+            { type: "sort", text: "Arrange: like / doesn't / He / volleyball / playing .", correctOrder: ["He", "doesn't", "like", "playing", "volleyball", "."], words: ["He","doesn't","like","playing","volleyball","."] }
         ] }
     ];
 
@@ -238,28 +227,16 @@
         totalScoreSpan.innerText = totalPoints;
     }
 
-    // ---------- CẢI TIẾN TEXT-TO-SPEECH: TỰ ĐỘNG NHẬN DIỆN TIẾNG VIỆT ----------
-    function isVietnamese(text) {
-        // Kiểm tra có dấu tiếng Việt (chữ có dấu sắc, huyền, hỏi, ngã, nặng, hoặc các chữ đặc thù: ă, â, ê, ô, ơ, ư, đ)
-        const vietnameseChars = /[àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰĐ]/;
-        return vietnameseChars.test(text);
-    }
-
-    function speakTextWithAutoLang(text) {
+    // Simple English TTS only (no Vietnamese)
+    function speakEnglish(text) {
         if (!('speechSynthesis' in window)) {
-            alert("Trình duyệt không hỗ trợ đọc to.");
+            alert("Browser does not support text-to-speech.");
             return;
         }
-        // Hủy bất kỳ giọng đang phát để tránh chồng chéo
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        // Tự động chọn ngôn ngữ
-        if (isVietnamese(text)) {
-            utterance.lang = 'vi-VN';
-        } else {
-            utterance.lang = 'en-US';
-        }
-        utterance.rate = 0.9; // tốc độ vừa phải
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
         window.speechSynthesis.speak(utterance);
     }
 
@@ -272,7 +249,7 @@
             if (roomCompleted[idx]) btn.classList.add("completed");
             if (idx === currentRoomIdx) btn.classList.add("active");
             btn.onclick = () => {
-                if (answered && !confirm("Bạn chưa hoàn thành câu hiện tại? Chuyển phòng sẽ làm mất tiến độ câu này. Tiếp?")) return;
+                if (answered && !confirm("You haven't finished the current question. Switch anyway?")) return;
                 currentRoomIdx = idx;
                 currentQIndex = 0;
                 answered = false;
@@ -288,7 +265,7 @@
         if (!room || currentQIndex >= room.questions.length) {
             if (!roomCompleted[currentRoomIdx]) {
                 roomCompleted[currentRoomIdx] = true;
-                alert(`🎉 Hoàn thành phòng "${room.name}"! Bạn được thêm 10 điểm thưởng!`);
+                alert(`🎉 Completed "${room.name}"! You get +10 bonus points!`);
                 totalPoints += 10;
                 updateTotalScoreUI();
                 renderRoomNav();
@@ -301,15 +278,14 @@
                 renderCurrentQuestion();
                 renderRoomNav();
             } else {
-                quizArea.innerHTML = `<div style="text-align:center;padding:40px;"><h2>🏆 CHÚC MỪNG! Bạn đã hoàn thành tất cả các phòng!</h2><p>Tổng điểm: ${totalPoints}</p><button class="action-btn" onclick="location.reload()">Chơi lại</button></div>`;
+                quizArea.innerHTML = `<div style="text-align:center;padding:40px;"><h2>🏆 CONGRATULATIONS! You finished all rooms!</h2><p>Total Score: ${totalPoints}</p><button class="action-btn" onclick="location.reload()">Play Again</button></div>`;
             }
             return;
         }
 
         const q = room.questions[currentQIndex];
         let html = `<div class="question-card"><div class="question-text">${q.text}</div>`;
-        // Nút nghe với ngôn ngữ tự động
-        html += `<button class="action-btn listen-btn" onclick="speakTextWithAutoLang('${escapeJS(q.text)}')">🔊 Nghe câu hỏi (TV/TA tự động)</button>`;
+        html += `<button class="action-btn listen-btn" onclick="speakEnglish('${escapeJS(q.text)}')">🔊 Listen (English)</button>`;
 
         if (q.type === "mc") {
             html += `<div class="options-area" id="optArea">`;
@@ -319,18 +295,18 @@
             html += `</div>`;
         } 
         else if (q.type === "tf") {
-            html += `<div class="options-area"><div class="opt" data-value="true">✅ Đúng (True)</div><div class="opt" data-value="false">❌ Sai (False)</div></div>`;
+            html += `<div class="options-area"><div class="opt" data-value="true">✅ True</div><div class="opt" data-value="false">❌ False</div></div>`;
         }
         else if (q.type === "fill") {
-            html += `<div class="options-area"><input type="text" id="fillAnswer" placeholder="Nhập câu trả lời..." autocomplete="off" style="padding:12px;border-radius:60px;border:2px solid #cfb887;">`;
-            if (q.hint) html += `<div style="font-size:0.9rem;">💡 Gợi ý: ${q.hint}</div>`;
-            html += `<button class="action-btn" id="submitFill">Kiểm tra</button></div>`;
+            html += `<div class="options-area"><input type="text" id="fillAnswer" placeholder="Type your answer..." autocomplete="off" style="padding:12px;border-radius:60px;border:2px solid #cfb887;">`;
+            if (q.hint) html += `<div style="font-size:0.9rem;">💡 Hint: ${q.hint}</div>`;
+            html += `<button class="action-btn" id="submitFill">Check</button></div>`;
         }
         else if (q.type === "sort") {
             let shuffled = [...q.words];
             for (let i=shuffled.length-1;i>0;i--) { let j=Math.floor(Math.random()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; }
-            html += `<div><div class="word-bank" id="sortBank"></div><div>Thứ tự hiện tại: <span id="currentOrder">(chưa chọn)</span></div>`;
-            html += `<button class="action-btn" id="submitSort">Xác nhận</button> <button class="action-btn" id="resetSort">Reset</button></div>`;
+            html += `<div><div class="word-bank" id="sortBank"></div><div>Current order: <span id="currentOrder">(not yet)</span></div>`;
+            html += `<button class="action-btn" id="submitSort">Submit</button> <button class="action-btn" id="resetSort">Reset</button></div>`;
         }
         else if (q.type === "reading") {
             html += `<div class="options-area">`;
@@ -341,11 +317,11 @@
         }
 
         html += `<div class="feedback" id="fb"></div>`;
-        html += `<div><button class="next-btn" id="nextBtn">➡️ Câu tiếp theo</button></div>`;
+        html += `<div><button class="next-btn" id="nextBtn">➡️ Next Question</button></div>`;
         html += `</div>`;
         quizArea.innerHTML = html;
 
-        // Gắn sự kiện
+        // attach events
         if (q.type === "mc" || q.type === "tf" || (q.type === "reading" && q.options)) {
             const opts = document.querySelectorAll(".opt");
             opts.forEach(opt => {
@@ -370,7 +346,6 @@
             };
         }
         else if (q.type === "sort") {
-            let originalWords = [...q.words];
             let currentSelected = [];
             let available = [...q.words];
             function updateSortUI() {
@@ -393,7 +368,7 @@
                     };
                     bankDiv.appendChild(card);
                 });
-                document.getElementById("currentOrder").innerText = currentSelected.length ? currentSelected.join(" ") : "(chưa chọn)";
+                document.getElementById("currentOrder").innerText = currentSelected.length ? currentSelected.join(" ") : "(not yet)";
             }
             document.getElementById("resetSort").onclick = () => {
                 if (answered) return;
@@ -404,7 +379,7 @@
             document.getElementById("submitSort").onclick = () => {
                 if (answered) return;
                 if (currentSelected.length !== q.words.length) {
-                    document.getElementById("fb").innerHTML = "❌ Hãy chọn đủ tất cả các từ!";
+                    document.getElementById("fb").innerHTML = "❌ Please select all words!";
                     return;
                 }
                 let userStr = currentSelected.join(" ");
@@ -418,7 +393,7 @@
         const nextBtn = document.getElementById("nextBtn");
         nextBtn.onclick = () => {
             if (!answered) {
-                document.getElementById("fb").innerHTML = "⚠️ Trả lời câu hỏi trước khi tiếp tục!";
+                document.getElementById("fb").innerHTML = "⚠️ Please answer the question first!";
                 return;
             }
             currentQIndex++;
@@ -436,7 +411,7 @@
             totalPoints += 10;
             roomScores[currentRoomIdx] += 10;
             updateTotalScoreUI();
-            fbDiv.innerHTML = "✅ Đúng rồi! +10 điểm 🎉";
+            fbDiv.innerHTML = "✅ Correct! +10 points 🎉";
         } else {
             let correctAnswerDisplay = "";
             if (q.type === "mc") correctAnswerDisplay = q.correct;
@@ -444,9 +419,9 @@
             else if (q.type === "fill") correctAnswerDisplay = q.correct;
             else if (q.type === "sort") correctAnswerDisplay = q.correctOrder.join(" ");
             else correctAnswerDisplay = q.correct;
-            fbDiv.innerHTML = `❌ Sai! Đáp án đúng: ${correctAnswerDisplay}. Học lại nhé!`;
+            fbDiv.innerHTML = `❌ Wrong! Correct answer: ${correctAnswerDisplay}. Keep learning!`;
         }
-        // disable options
+        // disable all interactive elements
         document.querySelectorAll(".opt, .word-card, #submitFill, #submitSort").forEach(el => {
             if (el) el.style.pointerEvents = "none";
         });
@@ -466,7 +441,7 @@
         return str.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
     }
 
-    // Khởi tạo
+    // start
     renderRoomNav();
     renderCurrentQuestion();
 </script>
