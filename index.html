@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>English Challenge - Lớp 4 | Ôn tập cuối năm</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none; /* tránh bôi đen khi chơi */
+        }
+
+        body {
+            background: linear-gradient(145deg, #1e6f5c 0%, #289672 100%);
+            font-family: 'Comic Neue', 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI Emoji', cursive, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* container game */
+        .game-container {
+            max-width: 800px;
+            width: 100%;
+            background: #fef9e8;
+            border-radius: 80px 80px 60px 60px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3), inset 0 1px 4px rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        /* header điểm + câu hỏi */
+        .game-header {
+            background: #ffcf4a;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            border-bottom: 5px solid #f4a261;
+        }
+
+        .score-box {
+            background: #2a3d36;
+            color: #ffeaac;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 1.7rem;
+            font-weight: bold;
+            font-family: monospace;
+            box-shadow: inset 0 -2px 0 #1e2c26, 0 5px 0 #1e2c26;
+        }
+
+        .question-counter {
+            background: white;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #c4450c;
+            box-shadow: 0 3px 0 #e0a800;
+        }
+
+        /* khu vực câu hỏi */
+        .question-area {
+            padding: 30px 25px 20px;
+            background: #fff7e8;
+        }
+
+        .question-text {
+            font-size: 1.7rem;
+            font-weight: bold;
+            background: #f0e2c5;
+            padding: 20px;
+            border-radius: 50px;
+            text-align: center;
+            color: #3b2e24;
+            margin-bottom: 30px;
+            box-shadow: inset 0 1px 4px #b9a77a, 0 6px 0 #d6bc8a;
+        }
+
+        /* options đa dạng */
+        .options-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            background: #e9e0cf;
+            border: 2px solid #c9b27c;
+            padding: 14px 18px;
+            border-radius: 100px;
+            font-size: 1.2rem;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.1s linear;
+            font-weight: bold;
+            color: #4a3724;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .option-btn:hover:not(.disabled-opt) {
+            background: #fad9a0;
+            transform: scale(0.98);
+            border-color: #f4a261;
+        }
+
+        .disabled-opt {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        /* dạng điền từ, sắp xếp */
+        .input-group {
+            background: #f3efdf;
+            padding: 20px;
+            border-radius: 50px;
+            text-align: center;
+        }
+
+        .input-group input {
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            width: 70%;
+            border-radius: 60px;
+            border: 2px solid #d4b87a;
+            text-align: center;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .word-card {
+            background: #ffb347;
+            padding: 10px 18px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #b4621a;
+            transition: 0.05s linear;
+        }
+
+        .word-card:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #b4621a;
+        }
+
+        .sort-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .sort-btn {
+            background: #78c0a0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            font-weight: bold;
+            min-height: 3rem;
+        }
+
+        .next-btn {
+            background: #f4a261;
+            border: none;
+            width: 80%;
+            margin: 10px auto;
+            display: block;
+            padding: 14px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            color: white;
+            transition: 0.1s;
+            box-shadow: 0 6px 0 #b95f1a;
+        }
+
+        .next-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #b95f1a;
+        }
+
+        .reset-btn {
+            background: #ad6b35;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            width: 50%;
+            box-shadow: 0 4px 0 #6a3e1a;
+        }
+
+        .result-area {
+            text-align: center;
+            background: #d9c8a7;
+            padding: 12px;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 550px) {
+            .question-text {
+                font-size: 1.2rem;
+            }
+            .option-btn {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="game-container" id="gameApp">
+    <div class="game-header">
+        <div class="score-box">🏆 ĐIỂM: <span id="scoreDisplay">0</span></div>
+        <div class="question-counter">📋 CÂU <span id="qIndex">1</span>/<span id="totalQ">12</span></div>
+    </div>
+    <div class="question-area" id="questionArea">
+        <!-- dynamic content -->
+    </div>
+    <div class="result-area" id="resultMessage">✨ Hãy trả lời câu hỏi! ✨</div>
+</div>
+
+<script>
+    // ---------- DỮ LIỆU CÂU HỎI DỰA TRÊN NỘI DUNG PDF LỚP 4 ----------
+    const questions = [
+        { // 1 - thời tiết & because
+            type: "mc",
+            text: "🔵 Look at the picture: Trời nắng gắt. Mẹ bảo: 'Wear a sun hat!' Hỏi: Why?",
+            options: ["Because it's rainy.", "Because it's sunny.", "Because it's cold.", "Because it's windy."],
+            correct: "Because it's sunny."
+        },
+        { // 2 - sở thích like + V-ing
+            type: "mc",
+            text: "⚽ Chọn câu ĐÚNG về sở thích: 'Anh ấy thích chơi cờ vua.'",
+            options: ["He like playing chess.", "He likes play chess.", "He likes playing chess.", "He like chess playing."],
+            correct: "He likes playing chess."
+        },
+        { // 3 - giờ giấc
+            type: "mc",
+            text: "⏰ What time is it? (Đồng hồ chỉ 2 giờ 30 phút)",
+            options: ["It's two fifteen.", "It's two thirty.", "It's two forty-five.", "It's three o'clock."],
+            correct: "It's two thirty."
+        },
+        { // 4 - chỉ đường + vị trí
+            type: "mc",
+            text: "🧭 'How do we get to the bus station?' – 'Go straight, then turn left. It's _____ the supermarket.'",
+            options: ["next to", "between", "opposite", "inside"],
+            correct: "opposite"
+        },
+        { // 5 - Quá khứ đơn was/were
+            type: "mc",
+            text: "👵 Khi còn bé: 'My grandmother _____ very pretty and smart.'",
+            options: ["were", "was", "is", "are"],
+            correct: "was"
+        },
+        { // 6 - Đọc hiểu True/False (đoạn ngắn từ pdf)
+            type: "tf",
+            text: "📖 Đọc đoạn: 'It's rainy today. I don't like rainy weather. I stay at home and read comics. I like reading comics.' Hỏi: 'He likes rainy weather.'",
+            correct: false,
+            trueStatement: "He likes rainy weather?",
+        },
+        { // 7 - sắp xếp từ thành câu
+            type: "sort",
+            text: "🔀 Sắp xếp các từ thành câu hoàn chỉnh:",
+            words: ["like", "chess", "playing", "Do", "you", "?"],
+            correctOrder: ["Do", "you", "like", "playing", "chess", "?"],
+            displayTarget: "Do you like playing chess?"
+        },
+        { // 8 - hoạt động hàng ngày + giờ
+            type: "fillBlank",
+            text: "⏰ Điền từ thích hợp: 'What time does he _____ to bed? → He goes to bed at nine o'clock.'",
+            blankAnswer: "go",
+            hint: "động từ (ngủ → go to bed)"
+        },
+        { // 9 - Why / Because kết hợp
+            type: "mc",
+            text: "🍫 'He doesn't like blue candy. Why?' – Lý do phù hợp?",
+            options: ["Because it's sweet.", "Because it's blue.", "Because it's a balloon.", "Because it's hot."],
+            correct: "Because it's blue."
+        },
+        { // 10 - từ vựng volcano + inside
+            type: "mc",
+            text: "🌋 Chọn từ đúng: 'The volcano has a big _____ inside. Hot lava comes out.'",
+            options: ["hole", "candle", "neighbor", "gift card"],
+            correct: "hole"
+        },
+        { // 11 - đọc hiểu (câu ngắn) Yes/No
+            type: "tf",
+            text: "📘 Đọc: 'We like playing basketball, but we don't like playing volleyball.' Hỏi: 'They like playing volleyball.'",
+            correct: false,
+        },
+        { // 12 - giới từ vị trí nâng cao
+            type: "fillBlank",
+            text: "📍 Nhìn bản đồ: Thư viện ở giữa hiệu sách và rạp chiếu phim. → 'The library is _____ the bookstore and the cinema.'",
+            blankAnswer: "between",
+            hint: "giới từ chỉ ở giữa"
+        }
+    ];
+
+    const totalQuestions = questions.length;
+    let currentIndex = 0;
+    let score = 0;
+    let answered = false;          // đã trả lời câu hiện tại chưa
+    let currentUserAnswer = null; // lưu đáp án user cho câu sort/fill
+
+    // DOM elements
+    const questionArea = document.getElementById("questionArea");
+    const scoreSpan = document.getElementById("scoreDisplay");
+    const qIndexSpan = document.getElementById("qIndex");
+    const totalQSpan = document.getElementById("totalQ");
+    const resultMsgDiv = document.getElementById("resultMessage");
+
+    totalQSpan.innerText = totalQuestions;
+
+    function updateScoreUI() {
+        scoreSpan.innerText = score;
+    }
+
+    function showResultMessage(msg, isError = false) {
+        resultMsgDiv.innerHTML = isError ? `❌ ${msg}` : `✅ ${msg}`;
+        resultMsgDiv.style.color = isError ? "#b33" : "#2a7a3e";
+        setTimeout(() => {
+            if (!answered) return;
+            // sau 1.5s ko làm gì thêm
+        }, 100);
+    }
+
+    // check câu trả lời (tùy loại)
+    function checkAnswer(userAnswer, correctAnswerRaw, qType, extraData = null) {
+        if (answered) {
+            showResultMessage("Bạn đã trả lời câu này rồi! Nhấn 'Câu tiếp theo'", true);
+            return false;
+        }
+        let isCorrect = false;
+        if (qType === "mc") {
+            isCorrect = (userAnswer === correctAnswerRaw);
+        } else if (qType === "tf") {
+            let boolCorrect = (correctAnswerRaw === true);
+            isCorrect = (userAnswer === boolCorrect);
+        } else if (qType === "sort") {
+            // userAnswer là mảng đã sắp xếp theo thứ tự người dùng chọn (join string)
+            let correctStr = correctAnswerRaw.join(" ");
+            isCorrect = (userAnswer.trim() === correctStr.trim());
+        } else if (qType === "fillBlank") {
+            isCorrect = (userAnswer.trim().toLowerCase() === correctAnswerRaw.toLowerCase());
+        }
+        if (isCorrect) {
+            score += 10;
+            updateScoreUI();
+            showResultMessage("Chính xác! +10 điểm 🎉");
+        } else {
+            let feedbackMsg = `Sai rồi! Đáp án đúng: ${getCorrectAnswerDisplay(qType, correctAnswerRaw, extraData)}`;
+            showResultMessage(feedbackMsg, true);
+        }
+        answered = true;
+        currentUserAnswer = null;
+        // vô hiệu hóa tất cả lựa chọn sau khi trả lời
+        disableOptionsUI();
+        return isCorrect;
+    }
+
+    function getCorrectAnswerDisplay(type, correct, extra) {
+        if (type === "mc") return correct;
+        if (type === "tf") return (correct === true ? "TRUE / Đúng" : "FALSE / Sai");
+        if (type === "sort") return extra?.displayTarget || correct.join(" ");
+        if (type === "fillBlank") return correct;
+        return correct;
+    }
+
+    function disableOptionsUI() {
+        const btns = document.querySelectorAll(".option-btn, .sort-btn, .word-card, .check-fill-btn");
+        btns.forEach(btn => {
+            btn.style.pointerEvents = "none";
+            btn.classList.add("disabled-opt");
+        });
+        const fillInput = document.querySelector("#fillInput");
+        if (fillInput) fillInput.disabled = true;
+    }
+
+    function enableOptionsNextQuestion() {
+        // sẽ được gọi khi sang câu mới
+        answered = false;
+        currentUserAnswer = null;
+        renderCurrentQuestion();
+    }
+
+    // Hàm render câu hỏi theo index
+    function renderCurrentQuestion() {
+        const q = questions[currentIndex];
+        if (!q) return;
+        let html = `<div class="question-text">${q.text}</div><div class="options-area" id="optionsArea">`;
+
+        if (q.type === "mc") {
+            q.options.forEach(opt => {
+                html += `<div class="option-btn" data-value="${escapeHtml(opt)}">🔘 ${opt}</div>`;
+            });
+            html += `</div><div class="feedback"></div>`;
+        } 
+        else if (q.type === "tf") {
+            html += `<div class="option-btn" data-value="true">✅ Đúng (True)</div>`;
+            html += `<div class="option-btn" data-value="false">❌ Sai (False)</div>`;
+            html += `</div>`;
+        }
+        else if (q.type === "sort") {
+            // shuffle words hiển thị để kéo thả nhưng dùng click để sắp xếp thứ tự
+            let shuffled = [...q.words];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            // Lưu trạng thái từ hiện tại
+            html += `<div class="input-group"><div class="word-bank" id="sortBank"></div>`;
+            html += `<div style="margin-top:10px"><strong>Thứ tự hiện tại:</strong> <span id="currentOrder">(chưa chọn)</span></div>`;
+            html += `<div class="sort-buttons"><button class="sort-btn" id="submitSort">✅ Xác nhận</button>`;
+            html += `<button class="sort-btn" id="resetSort">🔄 Reset</button></div></div>`;
+            html += `</div>`;
+            // sẽ dùng js để dynamic
+        }
+        else if (q.type === "fillBlank") {
+            html += `<div class="input-group"><input type="text" id="fillInput" placeholder="Nhập câu trả lời..." autocomplete="off">`;
+            html += `<button class="sort-btn check-fill-btn" id="submitFill" style="margin-top:15px;">✅ Kiểm tra</button>`;
+            if (q.hint) html += `<div style="font-size:0.9rem; margin-top:8px;">💡 Gợi ý: ${q.hint}</div>`;
+            html += `</div>`;
+        }
+
+        html += `<div class="feedback" id="feedbackMsg"></div>`;
+        html += `<button class="next-btn" id="nextBtn">➡️ CÂU TIẾP THEO ⬅️</button>`;
+        html += `<button class="next-btn reset-btn" id="resetGameBtn">🔄 CHƠI LẠI</button>`;
+        questionArea.innerHTML = html;
+
+        // gắn sự kiện tùy loại
+        if (q.type === "mc") {
+            const opts = document.querySelectorAll(".option-btn");
+            opts.forEach(opt => {
+                opt.addEventListener("click", (e) => {
+                    if (answered) return;
+                    let selectedVal = opt.getAttribute("data-value");
+                    checkAnswer(selectedVal, q.correct, "mc");
+                });
+            });
+        } 
+        else if (q.type === "tf") {
+            const opts = document.querySelectorAll(".option-btn");
+            opts.forEach(opt => {
+                opt.addEventListener("click", () => {
+                    if (answered) return;
+                    let val = opt.getAttribute("data-value") === "true";
+                    checkAnswer(val, q.correct, "tf");
+                });
+            });
+        }
+        else if (q.type === "sort") {
+            let originalWords = [...q.words];
+            let currentSelectedOrder = [];
+            // tạo các thẻ từ có thể click để thêm vào thứ tự
+            let availableWords = [...q.words];
+            function updateSortUI() {
+                const bankDiv = document.getElementById("sortBank");
+                if (!bankDiv) return;
+                bankDiv.innerHTML = "";
+                availableWords.forEach((word, idx) => {
+                    let card = document.createElement("div");
+                    card.className = "word-card";
+                    card.innerText = word;
+                    card.addEventListener("click", () => {
+                        if (answered) return;
+                        // thêm vào currentSelectedOrder
+                        let wordIndex = availableWords.indexOf(word);
+                        if (wordIndex !== -1) {
+                            let chosen = availableWords.splice(wordIndex, 1)[0];
+                            currentSelectedOrder.push(chosen);
+                            updateSortUI();
+                            document.getElementById("currentOrder").innerText = currentSelectedOrder.join(" ");
+                        }
+                    });
+                    bankDiv.appendChild(card);
+                });
+                const orderSpan = document.getElementById("currentOrder");
+                if (orderSpan) orderSpan.innerText = currentSelectedOrder.length ? currentSelectedOrder.join(" ") : "(chưa chọn)";
+                // nếu đã chọn hết thì hiển thị nút submit ok
+            }
+            const resetSortBtn = document.getElementById("resetSort");
+            if (resetSortBtn) {
+                resetSortBtn.addEventListener("click", () => {
+                    if (answered) return;
+                    availableWords = [...q.words];
+                    currentSelectedOrder = [];
+                    updateSortUI();
+                });
+            }
+            const submitSortBtn = document.getElementById("submitSort");
+            submitSortBtn.addEventListener("click", () => {
+                if (answered) return;
+                if (currentSelectedOrder.length !== q.words.length) {
+                    showResultMessage("Hãy chọn đủ tất cả các từ!", true);
+                    return;
+                }
+                let userStr = currentSelectedOrder.join(" ");
+                let correctStr = q.correctOrder.join(" ");
+                checkAnswer(userStr, q.correctOrder, "sort", {displayTarget: q.displayTarget});
+            });
+            updateSortUI();
+        }
+        else if (q.type === "fillBlank") {
+            const fillInput = document.getElementById("fillInput");
+            const submitFill = document.getElementById("submitFill");
+            submitFill.addEventListener("click", () => {
+                if (answered) return;
+                let answer = fillInput.value.trim();
+                if (answer === "") {
+                    showResultMessage("Vui lòng nhập câu trả lời!", true);
+                    return;
+                }
+                checkAnswer(answer, q.blankAnswer, "fillBlank");
+            });
+        }
+
+        // Nút next
+        const nextBtn = document.getElementById("nextBtn");
+        nextBtn.addEventListener("click", () => {
+            if (!answered) {
+                showResultMessage("⚠️ Hãy trả lời câu hỏi trước khi sang câu tiếp theo!", true);
+                return;
+            }
+            if (currentIndex + 1 < totalQuestions) {
+                currentIndex++;
+                qIndexSpan.innerText = currentIndex + 1;
+                answered = false;
+                renderCurrentQuestion();
+            } else {
+                // kết thúc game
+                showResultMessage(`🏁 HOÀN THÀNH! Bạn được ${score}/${totalQuestions*10} điểm. 🎓`, false);
+                document.getElementById("nextBtn").style.display = "none";
+                const resetBtn = document.getElementById("resetGameBtn");
+                if(resetBtn) resetBtn.style.marginTop = "20px";
+            }
+        });
+
+        const resetGameBtn = document.getElementById("resetGameBtn");
+        resetGameBtn.addEventListener("click", () => {
+            score = 0;
+            currentIndex = 0;
+            answered = false;
+            updateScoreUI();
+            qIndexSpan.innerText = 1;
+            renderCurrentQuestion();
+            showResultMessage("Game đã được làm mới! Cố lên nào 💪");
+        });
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // start game
+    renderCurrentQuestion();
+</script>
+</body>
+</html>
