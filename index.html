@@ -2,473 +2,166 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Lớp 4 - English Challenge: Ôn tập cuối năm (có nghe TV)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Ôn Tập Tiếng Anh 4 - Huỳnh Văn Chính (Full)</title>
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive;
-        }
-        body {
-            background: linear-gradient(135deg, #0b3b3f, #1e6f5c);
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .game-hub {
-            max-width: 1200px;
-            width: 100%;
-            background: #fff3e0;
-            border-radius: 70px 70px 50px 50px;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        .main-header {
-            background: #f9b23f;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            border-bottom: 5px solid #d48d2b;
-        }
-        .title {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #2d3e2b;
-            text-shadow: 2px 2px 0 #ffdd99;
-        }
-        .score-panel {
-            background: #2c4a3b;
-            padding: 8px 20px;
-            border-radius: 40px;
-            color: gold;
-            font-weight: bold;
-            font-size: 1.4rem;
-        }
-        .room-nav {
-            display: flex;
-            flex-wrap: wrap;
-            background: #e2d5bb;
-            gap: 5px;
-            padding: 12px 20px;
-            border-bottom: 3px solid #c9af7c;
-        }
-        .room-btn {
-            background: #c9ae7a;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.1s;
-            color: #2c2b26;
-        }
-        .room-btn.active {
-            background: #f7b05e;
-            box-shadow: inset 0 -2px 0 #b45f1b;
-            color: white;
-        }
-        .room-btn.completed {
-            background: #5f9c6b;
-            color: white;
-        }
-        .quiz-area {
-            padding: 30px;
-            background: #fff7ec;
-        }
-        .question-card {
-            background: #fef0db;
-            border-radius: 60px;
-            padding: 20px;
-            box-shadow: 0 8px 0 #d9c49b;
-        }
-        .question-text {
-            font-size: 1.5rem;
-            background: white;
-            padding: 18px;
-            border-radius: 50px;
-            margin-bottom: 25px;
-            border-left: 12px solid #f9b23f;
-        }
-        .options-area {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .opt {
-            background: #e9e0cf;
-            padding: 12px 18px;
-            border-radius: 100px;
-            cursor: pointer;
-            transition: 0.05s linear;
-            border: 1px solid #cfb887;
-            font-weight: bold;
-        }
-        .opt:hover {
-            background: #ffddb0;
-            transform: scale(0.98);
-        }
-        .disabled-opt, .opt.disabled {
-            pointer-events: none;
-            opacity: 0.6;
-        }
-        .feedback {
-            text-align: center;
-            font-size: 1.2rem;
-            margin: 15px 0;
-            font-weight: bold;
-        }
-        .next-btn, .action-btn {
-            background: #5fa7f2;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin: 5px;
-            cursor: pointer;
-            color: white;
-            box-shadow: 0 4px 0 #2d6ab0;
-        }
-        .next-btn:active, .action-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 0 #2d6ab0;
-        }
-        .listen-btn {
-            background: #f4a261;
-            margin-bottom: 15px;
-        }
-        .speak-card {
-            background: #e9f5e6;
-            padding: 15px;
-            border-radius: 40px;
-            text-align: center;
-            margin-top: 15px;
-        }
-        input, .word-bank {
-            margin: 10px 0;
-        }
-        .word-card {
-            display: inline-block;
-            background: #ffb347;
-            padding: 8px 15px;
-            margin: 5px;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-        @media (max-width: 650px) {
-            .question-text { font-size: 1.2rem; }
-            .room-btn { font-size: 0.8rem; padding: 6px 12px; }
-        }
-        .badge {
-            font-size: 1rem;
-            margin-left: 15px;
-        }
+        :root { --primary: #2563eb; --secondary: #10b981; --bg: #f8fafc; --text: #1e293b; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+        header { background: linear-gradient(135deg, var(--primary), #1d4ed8); color: white; padding: 30px 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .nav-container { sticky: top; background: white; display: flex; overflow-x: auto; border-bottom: 1px solid #e2e8f0; }
+        .nav-btn { padding: 15px 25px; border: none; background: none; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.3s; }
+        .nav-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
+        .main-content { max-width: 1000px; margin: 20px auto; padding: 0 15px; padding-bottom: 50px; }
+        .tab-section { display: none; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .box { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid var(--primary); }
+        .grid-v { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 10px; }
+        .v-item { background: #f1f5f9; padding: 10px; border-radius: 6px; font-size: 0.95em; border: 1px solid #e2e8f0; text-align: center; }
+        .accent-box { background: #fff7ed; border-left-color: #f97316; }
+        .phonics-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+        .phonics-card { background: #eff6ff; padding: 10px 15px; border-radius: 8px; border-left: 4px solid var(--primary); font-family: monospace; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        th { background: #f8fafc; color: var(--primary); }
     </style>
 </head>
 <body>
-<div class="game-hub" id="gameHub">
-    <div class="main-header">
-        <div class="title">🌟 Hành trình chinh phục Tiếng Anh 4 🌟</div>
-        <div class="score-panel">🏆 Điểm: <span id="totalScore">0</span></div>
+
+<header>
+    <h1>Grade 4 - Final Review</h1>
+    <p>Ủy Ban Nhân Dân Phường Tân Phú - TH Huỳnh Văn Chính [cite: 1]</p>
+    <small>Năm học 2025-2026 [cite: 2]</small>
+</header>
+
+<div class="nav-container">
+    <button class="nav-btn active" onclick="switchTab(event, 'vocab')">Từ Vựng</button>
+    <button class="nav-btn" onclick="switchTab(event, 'grammar')">Ngữ Pháp</button>
+    <button class="nav-btn" onclick="switchTab(event, 'skills')">Kỹ Năng & Phonics</button>
+</div>
+
+<div class="main-content">
+    
+    <div id="vocab" class="tab-section" style="display: block;">
+        <div class="box">
+            <h3>🌤 Thời tiết & Hoạt động </h3>
+            <div class="grid-v">
+                <div class="v-item">Rainy, windy, hot</div><div class="v-item">Cold, snowy, sunny</div>
+                <div class="v-item">Fly a kite</div><div class="v-item">Make a snowman</div><div class="v-item">Go outside</div>
+            </div>
+        </div>
+
+        <div class="box">
+            <h3>🎁 Ngày đặc biệt & Hàng ngày </h3>
+            <div class="grid-v">
+                <div class="v-item">Candy, balloon</div><div class="v-item">Present, candle</div>
+                <div class="v-item">Neighbor, invite</div><div class="v-item">Gift card, chocolate</div>
+                <div class="v-item">Get up, Have breakfast</div><div class="v-item">Go to school/home</div>
+                <div class="v-item">Have dinner, Go to bed</div>
+            </div>
+        </div>
+
+        <div class="box accent-box">
+            <h3>⏰ Thời gian & Buổi trong ngày </h3>
+            <div class="grid-v">
+                <div class="v-item">Morning, Afternoon</div><div class="v-item">Evening</div>
+                <div class="v-item">Two fifteen (2:15)</div><div class="v-item">Two thirty (2:30)</div>
+                <div class="v-item">Two forty-five (2:45)</div>
+            </div>
+        </div>
+
+        <div class="box">
+            <h3>🧩 Sở thích, Nơi chốn & Miêu tả </h3>
+            <div class="grid-v">
+                <div class="v-item">Read comics, Play chess</div><div class="v-item">Fish, Play basketball</div>
+                <div class="v-item">Volleyball, Badminton</div><div class="v-item">Supermarket, Stations</div>
+                <div class="v-item">Old, young, handsome</div><div class="v-item">Pretty, cute, smart</div>
+                <div class="v-item">Neat, messy, floor</div><div class="v-item">Volcano, lava, erupt</div>
+            </div>
+        </div>
     </div>
-    <div class="room-nav" id="roomNav"></div>
-    <div class="quiz-area" id="quizArea"></div>
+
+    <div id="grammar" class="tab-section">
+        <div class="box">
+            <h3>🌡 Hỏi Thời tiết & Lý do (Why - Because) </h3>
+            <p>• <b>What's the weather like?</b> → It's windy.</p>
+            <p>• <b>Don't put on your coat. Why?</b> → Because it's hot.</p>
+            <p>• <b>Wear a sun hat. Why?</b> → Because it's sunny.</p>
+            <p>• <b>Let's go home. Why?</b> → Because it's rainy.</p>
+        </div>
+
+        <div class="box accent-box">
+            <h3>💖 Sở thích (Like / Don't Like) [cite: 4, 5]</h3>
+            <table>
+                <tr><th>Chủ ngữ</th><th>Khẳng định</th><th>Phủ định</th></tr>
+                <tr><td>I / You / We / They</td><td>like...</td><td>don't like...</td></tr>
+                <tr><td>He / She</td><td>likes...</td><td>doesn't like...</td></tr>
+            </table>
+            <p>• <b>Sở thích + V-ing:</b> I like fishing. / He likes reading comics. </p>
+            <p>• <b>Do/Does...?</b> Do you like...? / Does he like...? [cite: 5, 6]</p>
+        </div>
+
+        <div class="box">
+            <h3>🕒 Giờ giấc & Thói quen </h3>
+            <p>• <b>What time is it?</b> → It's seven o'clock.</p>
+            <p>• <b>What time do you get up?</b> → I get up at seven o'clock.</p>
+            <p>• <b>What time does he/she + Vs/es?</b> → He goes to bed at nine o'clock.</p>
+        </div>
+
+        <div class="box">
+            <h3>🧭 Chỉ đường & Vị trí [cite: 3, 6]</h3>
+            <p>• <b>How do we get to the hospital?</b> → Turn left/right, Go straight.</p>
+            <p>• <b>Vị trí:</b> Next to (Kế bên), Opposite (Đối diện), Between (Ở giữa).</p>
+        </div>
+
+        <div class="box">
+            <h3>⏳ Quá khứ đơn (To Be) </h3>
+            <p>• <b>I / He / She / It:</b> was / wasn't (e.g., I was cute).</p>
+            <p>• <b>You / We / They:</b> were / weren't (e.g., We were young).</p>
+        </div>
+    </div>
+
+    <div id="skills" class="tab-section">
+        <div class="box">
+            <h3>🎧 Ngữ Âm (Phonics) </h3>
+            <div class="phonics-list">
+                <div class="phonics-card">/ŋ/: ring, bang, long</div>
+                <div class="phonics-card">/ʒ/: treasure, explosion</div>
+                <div class="phonics-card">/ð/: father, brother, this</div>
+                <div class="phonics-card">/θ/: three, throw</div>
+                <div class="phonics-card">/uː/: flute, you</div>
+                <div class="phonics-card">/ʊ/: foot</div>
+                <div class="phonics-card">/ɔː/: corn, horn, storm</div>
+                <div class="phonics-card">/ɜː/: girl, nurse, hurt</div>
+                <div class="phonics-card">/iː/: green, eat, queen</div>
+                <div class="phonics-card">/sl/ /sp/: sleep, spoon</div>
+            </div>
+        </div>
+
+        <div class="box accent-box">
+            <h3>📝 Kỹ năng yêu cầu </h3>
+            <ul>
+                <li><b>Nghe:</b> Khoanh tròn, nối, viết, đánh dấu chọn. </li>
+                <li><b>Nói:</b> Trả lời về bản thân (tên, tuổi, thói quen...), mô tả hình. </li>
+                <li><b>Đọc:</b> Nối câu, sắp xếp thứ tự, T/F, Yes/No (đoạn văn 50-55 từ). </li>
+                <li><b>Viết:</b> Điền mẫu đơn, thiệp sinh nhật, nhãn vở (đoạn văn 25-30 từ). </li>
+            </ul>
+        </div>
+    </div>
+
 </div>
 
 <script>
-    // ------------------ DỮ LIỆU CÂU HỎI ĐẦY ĐỦ THEO PDF ------------------
-    const rooms = [
-        { name: "☀️ Thời tiết & Hoạt động", icon: "☀️", completed: false, questions: [
-            { type: "mc", text: "What's the weather like? (trời có mưa)", options: ["It's rainy.", "It's sunny.", "It's windy.", "It's snowy."], correct: "It's rainy." },
-            { type: "mc", text: "When it's snowy, we can _____ .", options: ["fly a kite", "make a snowman", "go outside", "wear a sun hat"], correct: "make a snowman" },
-            { type: "fill", text: "Hoàn thành câu: 'Don't put on your coat because it's _____ .' (nóng)", correct: "hot", hint: "trái nghĩa với cold" },
-            { type: "tf", text: "Nói: 'Let's go home because it's rainy.' → Họ về nhà vì trời nắng.", correct: false },
-            { type: "mc", text: "Why should we wear a sun hat?", options: ["Because it's cold.", "Because it's sunny.", "Because it's windy.", "Because it's rainy."], correct: "Because it's sunny." }
-        ] },
-        { name: "⏰ Giờ giấc & Hàng ngày", icon: "⏰", completed: false, questions: [
-            { type: "mc", text: "What time is it? (2:45)", options: ["It's two fifteen.", "It's two thirty.", "It's two forty-five.", "It's three o'clock."], correct: "It's two forty-five." },
-            { type: "fill", text: "What time do you _____ to school? (đi học)", correct: "go", hint: "động từ 'go'" },
-            { type: "sort", text: "Sắp xếp: have / breakfast / I / at / six thirty / .", correctOrder: ["I", "have", "breakfast", "at", "six thirty", "."], words: ["I","have","breakfast","at","six thirty","."] },
-            { type: "mc", text: "He _____ to bed at nine o'clock in the evening.", options: ["go", "goes", "going", "went"], correct: "goes" },
-            { type: "tf", text: "Câu: 'She gets up at seven o'clock in the morning.' → Cô ấy thức dậy lúc 7 giờ tối.", correct: false }
-        ] },
-        { name: "🏀 Sở thích & Ngày đặc biệt", icon: "🎈", completed: false, questions: [
-            { type: "mc", text: "I like _____ comics.", options: ["read", "reading", "to read", "reads"], correct: "reading" },
-            { type: "mc", text: "He doesn't like _____ .", options: ["fishing", "fish", "go fish", "fished"], correct: "fishing" },
-            { type: "fill", text: "Do you like playing chess? → Yes, _____ .", correct: "I do", hint: "Yes, I do / No, I don't" },
-            { type: "tf", text: "Câu: 'She likes balloons but she doesn't like candy.' → Cô ấy thích kẹo.", correct: false },
-            { type: "sort", text: "Sắp xếp: doesn't / playing / like / chess / He / .", correctOrder: ["He", "doesn't", "like", "playing", "chess", "."], words: ["He","doesn't","like","playing","chess","."] },
-            { type: "mc", text: "What do you want on your birthday? (chọn 1 từ trong bài)", options: ["volcano", "candle", "train station", "neat"], correct: "candle" }
-        ] },
-        { name: "🧭 Chỉ đường & Vị trí", icon: "🗺️", completed: false, questions: [
-            { type: "mc", text: "How to get to the bus station? 'Go straight, then _____ left.'", options: ["turn", "go", "take", "move"], correct: "turn" },
-            { type: "mc", text: "The library is _____ the bookstore and the cinema.", options: ["next to", "opposite", "between", "inside"], correct: "between" },
-            { type: "fill", text: "The supermarket is _____ to the bank. (kế bên)", correct: "next", hint: "next to" },
-            { type: "tf", text: "Turn right at the traffic lights. → Rẽ trái ở đèn giao thông.", correct: false },
-            { type: "sort", text: "Sắp xếp: opposite / the / school / is / hospital / the / .", correctOrder: ["The", "hospital", "is", "opposite", "the", "school", "."], words: ["The","hospital","is","opposite","the","school","."] }
-        ] },
-        { name: "📖 Ôn tổng hợp & Đọc hiểu", icon: "📘", completed: false, questions: [
-            { type: "reading", text: "Đọc đoạn: 'My name is Lan. I like sunny weather. I often fly a kite in the park. I don't like rainy days because I can't go outside.' Hỏi: Does Lan like rainy weather?", correct: false, options: ["Yes, she does", "No, she doesn't"] },
-            { type: "mc", text: "Quá khứ của 'is'? (trong bài: I ___ cute when I was young.)", options: ["were", "was", "am", "are"], correct: "was" },
-            { type: "fill", text: "The volcano has a big _____ inside. Lava comes out.", correct: "hole", hint: "từ trong bài volcano" },
-            { type: "tf", text: "The classroom is neat and the floor is clean. → 'neat' có nghĩa là bừa bộn.", correct: false },
-            { type: "sort", text: "Sắp xếp: like / doesn't / He / volleyball / playing .", correctOrder: ["He", "doesn't", "like", "playing", "volleyball", "."], words: ["He","doesn't","like","playing","volleyball","."] }
-        ] }
-    ];
-
-    let totalPoints = 0;
-    let currentRoomIdx = 0;
-    let currentQIndex = 0;
-    let answered = false;
-    let roomScores = [0,0,0,0,0];
-    let roomCompleted = [false,false,false,false,false];
-
-    const roomNavDiv = document.getElementById("roomNav");
-    const quizArea = document.getElementById("quizArea");
-    const totalScoreSpan = document.getElementById("totalScore");
-
-    function updateTotalScoreUI() {
-        totalScoreSpan.innerText = totalPoints;
+    function switchTab(evt, tabId) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-section");
+        for (i = 0; i < tabcontent.length; i++) tabcontent[i].style.display = "none";
+        tablinks = document.getElementsByClassName("nav-btn");
+        for (i = 0; i < tablinks.length; i++) tablinks[i].className = tablinks[i].className.replace(" active", "");
+        document.getElementById(tabId).style.display = "block";
+        evt.currentTarget.className += " active";
+        window.scrollTo(0,0);
     }
-
-    // ---------- CẢI TIẾN TEXT-TO-SPEECH: TỰ ĐỘNG NHẬN DIỆN TIẾNG VIỆT ----------
-    function isVietnamese(text) {
-        // Kiểm tra có dấu tiếng Việt (chữ có dấu sắc, huyền, hỏi, ngã, nặng, hoặc các chữ đặc thù: ă, â, ê, ô, ơ, ư, đ)
-        const vietnameseChars = /[àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựđÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰĐ]/;
-        return vietnameseChars.test(text);
-    }
-
-    function speakTextWithAutoLang(text) {
-        if (!('speechSynthesis' in window)) {
-            alert("Trình duyệt không hỗ trợ đọc to.");
-            return;
-        }
-        // Hủy bất kỳ giọng đang phát để tránh chồng chéo
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        // Tự động chọn ngôn ngữ
-        if (isVietnamese(text)) {
-            utterance.lang = 'vi-VN';
-        } else {
-            utterance.lang = 'en-US';
-        }
-        utterance.rate = 0.9; // tốc độ vừa phải
-        window.speechSynthesis.speak(utterance);
-    }
-
-    function renderRoomNav() {
-        roomNavDiv.innerHTML = "";
-        rooms.forEach((room, idx) => {
-            const btn = document.createElement("button");
-            btn.innerText = `${room.icon} ${room.name}`;
-            btn.classList.add("room-btn");
-            if (roomCompleted[idx]) btn.classList.add("completed");
-            if (idx === currentRoomIdx) btn.classList.add("active");
-            btn.onclick = () => {
-                if (answered && !confirm("Bạn chưa hoàn thành câu hiện tại? Chuyển phòng sẽ làm mất tiến độ câu này. Tiếp?")) return;
-                currentRoomIdx = idx;
-                currentQIndex = 0;
-                answered = false;
-                renderCurrentQuestion();
-                renderRoomNav();
-            };
-            roomNavDiv.appendChild(btn);
-        });
-    }
-
-    function renderCurrentQuestion() {
-        const room = rooms[currentRoomIdx];
-        if (!room || currentQIndex >= room.questions.length) {
-            if (!roomCompleted[currentRoomIdx]) {
-                roomCompleted[currentRoomIdx] = true;
-                alert(`🎉 Hoàn thành phòng "${room.name}"! Bạn được thêm 10 điểm thưởng!`);
-                totalPoints += 10;
-                updateTotalScoreUI();
-                renderRoomNav();
-            }
-            let nextRoom = currentRoomIdx+1;
-            if (nextRoom < rooms.length) {
-                currentRoomIdx = nextRoom;
-                currentQIndex = 0;
-                answered = false;
-                renderCurrentQuestion();
-                renderRoomNav();
-            } else {
-                quizArea.innerHTML = `<div style="text-align:center;padding:40px;"><h2>🏆 CHÚC MỪNG! Bạn đã hoàn thành tất cả các phòng!</h2><p>Tổng điểm: ${totalPoints}</p><button class="action-btn" onclick="location.reload()">Chơi lại</button></div>`;
-            }
-            return;
-        }
-
-        const q = room.questions[currentQIndex];
-        let html = `<div class="question-card"><div class="question-text">${q.text}</div>`;
-        // Nút nghe với ngôn ngữ tự động
-        html += `<button class="action-btn listen-btn" onclick="speakTextWithAutoLang('${escapeJS(q.text)}')">🔊 Nghe câu hỏi (TV/TA tự động)</button>`;
-
-        if (q.type === "mc") {
-            html += `<div class="options-area" id="optArea">`;
-            q.options.forEach(opt => {
-                html += `<div class="opt" data-value="${escapeHtml(opt)}">🔘 ${opt}</div>`;
-            });
-            html += `</div>`;
-        } 
-        else if (q.type === "tf") {
-            html += `<div class="options-area"><div class="opt" data-value="true">✅ Đúng (True)</div><div class="opt" data-value="false">❌ Sai (False)</div></div>`;
-        }
-        else if (q.type === "fill") {
-            html += `<div class="options-area"><input type="text" id="fillAnswer" placeholder="Nhập câu trả lời..." autocomplete="off" style="padding:12px;border-radius:60px;border:2px solid #cfb887;">`;
-            if (q.hint) html += `<div style="font-size:0.9rem;">💡 Gợi ý: ${q.hint}</div>`;
-            html += `<button class="action-btn" id="submitFill">Kiểm tra</button></div>`;
-        }
-        else if (q.type === "sort") {
-            let shuffled = [...q.words];
-            for (let i=shuffled.length-1;i>0;i--) { let j=Math.floor(Math.random()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; }
-            html += `<div><div class="word-bank" id="sortBank"></div><div>Thứ tự hiện tại: <span id="currentOrder">(chưa chọn)</span></div>`;
-            html += `<button class="action-btn" id="submitSort">Xác nhận</button> <button class="action-btn" id="resetSort">Reset</button></div>`;
-        }
-        else if (q.type === "reading") {
-            html += `<div class="options-area">`;
-            q.options.forEach(opt => {
-                html += `<div class="opt" data-value="${opt}">${opt}</div>`;
-            });
-            html += `</div>`;
-        }
-
-        html += `<div class="feedback" id="fb"></div>`;
-        html += `<div><button class="next-btn" id="nextBtn">➡️ Câu tiếp theo</button></div>`;
-        html += `</div>`;
-        quizArea.innerHTML = html;
-
-        // Gắn sự kiện
-        if (q.type === "mc" || q.type === "tf" || (q.type === "reading" && q.options)) {
-            const opts = document.querySelectorAll(".opt");
-            opts.forEach(opt => {
-                opt.addEventListener("click", (e) => {
-                    if (answered) return;
-                    let selected = opt.getAttribute("data-value");
-                    let isCorrect = false;
-                    if (q.type === "tf") isCorrect = (selected === "true") === q.correct;
-                    else if (q.type === "reading") isCorrect = (selected === (q.correct ? "Yes, she does" : "No, she doesn't"));
-                    else isCorrect = (selected === q.correct);
-                    handleAnswer(isCorrect, q);
-                });
-            });
-        }
-        else if (q.type === "fill") {
-            const submitBtn = document.getElementById("submitFill");
-            submitBtn.onclick = () => {
-                if (answered) return;
-                let userAns = document.getElementById("fillAnswer").value.trim().toLowerCase();
-                let isCorrect = (userAns === q.correct.toLowerCase());
-                handleAnswer(isCorrect, q);
-            };
-        }
-        else if (q.type === "sort") {
-            let originalWords = [...q.words];
-            let currentSelected = [];
-            let available = [...q.words];
-            function updateSortUI() {
-                const bankDiv = document.getElementById("sortBank");
-                if (!bankDiv) return;
-                bankDiv.innerHTML = "";
-                available.forEach(w => {
-                    let card = document.createElement("div");
-                    card.className = "word-card";
-                    card.innerText = w;
-                    card.onclick = () => {
-                        if (answered) return;
-                        let idx = available.indexOf(w);
-                        if (idx !== -1) {
-                            let taken = available.splice(idx,1)[0];
-                            currentSelected.push(taken);
-                            updateSortUI();
-                            document.getElementById("currentOrder").innerText = currentSelected.join(" ");
-                        }
-                    };
-                    bankDiv.appendChild(card);
-                });
-                document.getElementById("currentOrder").innerText = currentSelected.length ? currentSelected.join(" ") : "(chưa chọn)";
-            }
-            document.getElementById("resetSort").onclick = () => {
-                if (answered) return;
-                available = [...q.words];
-                currentSelected = [];
-                updateSortUI();
-            };
-            document.getElementById("submitSort").onclick = () => {
-                if (answered) return;
-                if (currentSelected.length !== q.words.length) {
-                    document.getElementById("fb").innerHTML = "❌ Hãy chọn đủ tất cả các từ!";
-                    return;
-                }
-                let userStr = currentSelected.join(" ");
-                let correctStr = q.correctOrder.join(" ");
-                let isCorrect = (userStr === correctStr);
-                handleAnswer(isCorrect, q);
-            };
-            updateSortUI();
-        }
-
-        const nextBtn = document.getElementById("nextBtn");
-        nextBtn.onclick = () => {
-            if (!answered) {
-                document.getElementById("fb").innerHTML = "⚠️ Trả lời câu hỏi trước khi tiếp tục!";
-                return;
-            }
-            currentQIndex++;
-            answered = false;
-            renderCurrentQuestion();
-            renderRoomNav();
-        };
-    }
-
-    function handleAnswer(isCorrect, q) {
-        if (answered) return;
-        answered = true;
-        const fbDiv = document.getElementById("fb");
-        if (isCorrect) {
-            totalPoints += 10;
-            roomScores[currentRoomIdx] += 10;
-            updateTotalScoreUI();
-            fbDiv.innerHTML = "✅ Đúng rồi! +10 điểm 🎉";
-        } else {
-            let correctAnswerDisplay = "";
-            if (q.type === "mc") correctAnswerDisplay = q.correct;
-            else if (q.type === "tf") correctAnswerDisplay = q.correct ? "True" : "False";
-            else if (q.type === "fill") correctAnswerDisplay = q.correct;
-            else if (q.type === "sort") correctAnswerDisplay = q.correctOrder.join(" ");
-            else correctAnswerDisplay = q.correct;
-            fbDiv.innerHTML = `❌ Sai! Đáp án đúng: ${correctAnswerDisplay}. Học lại nhé!`;
-        }
-        // disable options
-        document.querySelectorAll(".opt, .word-card, #submitFill, #submitSort").forEach(el => {
-            if (el) el.style.pointerEvents = "none";
-        });
-        const fillInp = document.getElementById("fillAnswer");
-        if (fillInp) fillInp.disabled = true;
-    }
-
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        });
-    }
-    function escapeJS(str) {
-        return str.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
-    }
-
-    // Khởi tạo
-    renderRoomNav();
-    renderCurrentQuestion();
 </script>
+
 </body>
 </html>
